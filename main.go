@@ -26,12 +26,12 @@ func main() {
 
 var id int
 var name, email string
-rows := db.QueryRows(`
+rows, err  := db.Query(`
   SELECT id, name, email
   FROM users
   WHERE email = $1
-  OR ID > $2,
-  "jon@calhoun.io", 3`)
+  OR ID > $2`,
+  "jon@calhoun.io", 3)
 if err != nil {
   panic(err)
 }
