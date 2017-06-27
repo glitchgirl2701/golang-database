@@ -3,16 +3,19 @@ package main
 import (
   "fmt"
 
+  "usegolang.com/models"
+
+
   //"github.com/jinzhu/gorm"
   _ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 const (
-  host = "localhost"
-  port = 5432
-  user = "kaylathomsen"
-  password = "broadway"
-  dbname = "usegolang_dev"
+  host =      "localhost"
+  port =      5432
+  user =      "kaylathomsen"
+  password =  "broadway"
+  dbname =    "usegolang_dev"
 )
 
 func main() {
