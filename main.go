@@ -1,47 +1,34 @@
 package main
 
 import (
-  "database/sql"
   "fmt"
 
-  _ "github.com/lib/pq"
+  //"github.com/jinzhu/gorm"
+  _ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 const (
-  host      = "localhost"
-  port      = 5432
-  user      = "kaylathomsen"
-  password  = "broadway"
-  dbname    = "usegolang_dev"
+  host = "localhost"
+  port = 5432
+  user = "kaylathomsen"
+  password = "broadway"
+  dbname = "usegolang_dev"
 )
 
 func main() {
-  psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-    "password=%s dbname=%s  sslmode=disable",
+  psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
     host, port, user, password, dbname)
-  db, err := sql.Open("postgres", psqlInfo)
-  if err != nil {
-    panic(err)
-  }
-
-  var id int
-  for i := 1; i < 6; i++ {
-    userId := 1
-    if i > 3 {
-      userId = 2
-    }
-    amount := 1000 * i
-    description := fmt.Sprintf("USB-C Adapter x%d", i)
-
-    err = db.QueryRow(`
-      INSERT INTO orders (user_id, amount, description)
-      VALUES ($1, $2, $3)
-      RETURNING id`,
-      userId, amount, description).Scan(&id)
+  us, err := models.NewUserService(psqlInfo)
     if err != nil {
       panic(err)
-      }
-      fmt.Println("Created an order with ID:", id)
-  }
-  db.Close()
+    }
+  defer us.Close()
+  us.DestructiveReset()
 }
+
+//   user, err := us.ByID(2)
+//   if err != nil {
+//     panic(err)
+//   }
+//   fmt.Println(user)
+// }
